@@ -7,7 +7,7 @@ const pool = require('../modules/pool.js')
 
 // GET
 // GET all songs from database
-Router.get('/', (req, res) => {
+koalaRouter.get('/', (req, res) => {
     // write SQL query and save that in a variable
     let queryText = 'SELECT * FROM "songs";';
 
@@ -27,7 +27,7 @@ Router.get('/', (req, res) => {
 
 
 // GET for specific id
-Router.get('/:id', (req, res) => {
+koalaRouter.get('/:id', (req, res) => {
     // id is a route parameter
     // we use this parameter to identify
     // that we want this specific identified part of the request
