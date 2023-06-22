@@ -12,7 +12,7 @@ $( document ).ready( function(){
 
 function setupClickListeners() {
   // Listener to update koala transfer status
-  $( '#viewKoalas').on('click', .)
+  $( '#viewKoalas' ).on( 'click', '.transfer-btn', transferReady )
   $( '#addButton' ).on( 'click', function(){
     console.log( 'in addButton on click' );
     // get user input and put in an object
@@ -51,11 +51,11 @@ function transferReady() {
     method: 'PUT',
     url: `/koalas/${koalaId}`
   }).then((response) => {
-    console.log('Koala ready for transfer!');
+    console.log( 'Koala ready for transfer!' );
     getKoalas();
   }).catch((error) => {
-    console.log('Error changing transfer status', error)
-    alert('Transfer status NOT updated!');
+    console.log( 'Error changing transfer status', error )
+    alert( 'Transfer status NOT updated!' );
     resizeBy.sendstatus(500);
   });
 }
