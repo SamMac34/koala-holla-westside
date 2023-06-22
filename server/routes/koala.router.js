@@ -15,7 +15,7 @@ Router.get('/:id', (req, res) => {
 
     // write a SQL query that gets back the koala with the
     // specified (parameter) id
-    const query = `SELECT * FROM "koalas" WHERE id=$1;`;
+    const query = `SELECT * FROM "Koalas" WHERE id=$1;`;
 
     // use pool.query to access pool 
     // (group of connections between server and database)
