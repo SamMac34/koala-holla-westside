@@ -115,6 +115,6 @@ function transferReady() {
   }).catch((error) => {
     console.log( 'Error changing transfer status', error )
     alert( 'Transfer status NOT updated!' );
-    resizeBy.sendstatus(500);
+    res.sendStatus(500);
   });
 }}
