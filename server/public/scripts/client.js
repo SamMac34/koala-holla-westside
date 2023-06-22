@@ -7,12 +7,12 @@ $( document ).ready( function(){
   // load existing koalas on page load
   getKoalas();
   
+    // Listener to update koala transfer status
+    $( '#viewKoalas' ).on( 'click', '.transfer-btn', transferReady )
 
 }); // end doc ready
 
 function setupClickListeners() {
-  // Listener to update koala transfer status
-  $( '#viewKoalas' ).on( 'click', '.transfer-btn', transferReady )
   $( '#addButton' ).on( 'click', function(){
     console.log( 'in addButton on click' );
     // get user input and put in an object
@@ -101,6 +101,8 @@ function render(koalas) {
 </tr>
     `)
   }
+};
+
 // TODO ADD PUT req to update transfer status
 function transferReady() {
   console.log('in transferReady');
@@ -117,4 +119,4 @@ function transferReady() {
     alert( 'Transfer status NOT updated!' );
     resizeBy.sendstatus(500);
   });
-}}
+}
