@@ -25,8 +25,12 @@ function setupClickListeners() {
       readyForTransfer: 'testName',
       notes: 'testName',
     };
-    // call saveKoala with the new obejct
+    // call saveKoala with the new object
     saveKoala( koalaToSend );
+
+    // Event listener that uses event delegation 
+    $('#viewKoalas').on('click', '.delete-button', deleteKoala);
+
   }); 
 }
 
@@ -41,7 +45,7 @@ function getKoalas(){
     // create console log to make sure it works
     console.log('GET /koalas response:', response);
     // render koalas
-    // render(response);
+    render(response);
   })
 } // end getKoalas
 
@@ -53,6 +57,50 @@ function saveKoala( newKoala ){
  
 }
 
+// delete a koala with a given id
+function deleteKoala() {
+  // get the id of the koala to delete
+  console.log('in deleteKoala: ', $(this));
+
+  // Use DOM traversal to get the data id of the koalas table row
+  const koalaId = $(this).parent().parent().data('id');
+
+  // Send a delete request to the server
+  $.ajax({
+      method: 'DELETE',
+      url: `/koalas/${koalaId}`
+  })
+      .then((response) => {
+        console.log('deleted a koala');
+        getKoalas();
+      })
+      .catch((error) => {
+        console.log('Error in delete request - deleteKoala()', error);
+        // Notifies the user with an alert window
+        alert('Error with deleting a koala');
+      })
+}
+
+
+// function render
+function render(koalas) {
+  $('#viewKoalas').empty();
+  // loop through the koalas
+  for (let i = 0; i < koalas.length; i++) {
+    // if (${koalas[i].ready_to_transfer})
+    $('#viewKoalas').append(`
+    <tr data-id=${koalas[i].id}>
+    <td>${koalas[i].name}</td>
+    <td>${koalas[i].age}</td>
+    <td>${koalas[i].gender}</td>
+    <td>${koalas[i].ready_to_transfer}</td>
+    <td>${koalas[i].notes}</td>
+    <td>${koalas[i].mark_ready}</td>
+    <td>${koalas[i].remove}</td>
+    <td><button class='delete-button'>Delete</button></td>
+</tr>
+    `)
+  }
 // TODO ADD PUT req to update transfer status
 function transferReady() {
   console.log('in transferReady');
@@ -69,4 +117,4 @@ function transferReady() {
     alert( 'Transfer status NOT updated!' );
     resizeBy.sendstatus(500);
   });
-}
+}}
