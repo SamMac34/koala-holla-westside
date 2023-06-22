@@ -9,7 +9,7 @@ const pool = require('../modules/pool.js')
 // GET all songs from database
 koalaRouter.get('/', (req, res) => {
     // write SQL query and save that in a variable
-    let queryText = 'SELECT * FROM "songs";';
+    let queryText = 'SELECT * FROM "Koalas";';
 
     // send SQL query to the database using pool.query
     pool.query(queryText)
