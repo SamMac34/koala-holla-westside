@@ -6,10 +6,13 @@ $( document ).ready( function(){
   setupClickListeners()
   // load existing koalas on page load
   getKoalas();
+  
 
 }); // end doc ready
 
 function setupClickListeners() {
+  // Listener to update koala transfer status
+  $( '#viewKoalas' ).on( 'click', '.transfer-btn', transferReady )
   $( '#addButton' ).on( 'click', function(){
     console.log( 'in addButton on click' );
     // get user input and put in an object
@@ -98,4 +101,20 @@ function render(koalas) {
 </tr>
     `)
   }
-}
+// TODO ADD PUT req to update transfer status
+function transferReady() {
+  console.log('in transferReady');
+  const koalaId = $(this).parent().parent().data('id');
+
+  $.ajax({
+    method: 'PUT',
+    url: `/koalas/${koalaId}`
+  }).then((response) => {
+    console.log( 'Koala ready for transfer!' );
+    getKoalas();
+  }).catch((error) => {
+    console.log( 'Error changing transfer status', error )
+    alert( 'Transfer status NOT updated!' );
+    resizeBy.sendstatus(500);
+  });
+}}
