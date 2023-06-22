@@ -6,10 +6,13 @@ $( document ).ready( function(){
   setupClickListeners()
   // load existing koalas on page load
   getKoalas();
+  
 
 }); // end doc ready
 
 function setupClickListeners() {
+  // Listener to update koala transfer status
+  $( '')
   $( '#addButton' ).on( 'click', function(){
     console.log( 'in addButton on click' );
     // get user input and put in an object
