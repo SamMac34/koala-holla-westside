@@ -31,11 +31,22 @@ function setupClickListeners() {
   }); 
 }
 
+// initial GET request for ALL koalas
 function getKoalas(){
   console.log( 'in getKoalas' );
   // ajax call to server to get koalas
-  
+  $.ajax({
+    type: 'GET',
+    url: '/koalas'
+  }).then((response) => {
+    // create console log to make sure it works
+    console.log('GET /koalas response:', response);
+    // render koalas
+    // render(response);
+  })
 } // end getKoalas
+
+
 
 function saveKoala( newKoala ){
   console.log( 'in saveKoala', newKoala );
