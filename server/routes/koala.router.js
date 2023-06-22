@@ -1,10 +1,32 @@
 const express = require('express');
 const koalaRouter = express.Router();
+const pool = require('../modules/pool.js')
 
 // DB CONNECTION
 
 
 // GET
+// GET all songs from database
+Router.get('/', (req, res) => {
+    // write SQL query and save that in a variable
+    let queryText = 'SELECT * FROM "songs";';
+
+    // send SQL query to the database using pool.query
+    pool.query(queryText)
+    // convention is to use the word 'result to describe
+    // what we get back from the database
+        .then((result) => {
+            console.log('result is: ', result);
+            //result.rows is where the data we requested is
+            res.send(result.rows);
+        }).catch ((error) => {
+            console.log('Error making query:', error)
+            res.sendStatus(500);
+        })
+});
+
+
+// GET for specific id
 Router.get('/:id', (req, res) => {
     // id is a route parameter
     // we use this parameter to identify
