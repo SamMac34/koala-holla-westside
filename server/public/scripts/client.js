@@ -1,20 +1,21 @@
-console.log( 'js' );
+console.log('js');
 
-$( document ).ready( function(){
-  console.log( 'JQ' );
+$(document).ready(function () {
+  console.log('JQ');
   // Establish Click Listeners
   setupClickListeners()
   // load existing koalas on page load
   getKoalas();
-  
+
+  // Listener to update koala transfer status
+  $('#viewKoalas').on('click', '.transfer-btn', transferReady)
+
 
 }); // end doc ready
 
 function setupClickListeners() {
-  // Listener to update koala transfer status
-  $( '#viewKoalas' ).on( 'click', '.transfer-btn', transferReady )
-  $( '#addButton' ).on( 'click', function(){
-    console.log( 'in addButton on click' );
+  $('#addButton').on('click', function () {
+    console.log('in addButton on click');
     // get user input and put in an object
     // NOT WORKING YET :(
     // using a test object
@@ -26,17 +27,17 @@ function setupClickListeners() {
       notes: 'testName',
     };
     // call saveKoala with the new object
-    saveKoala( koalaToSend );
+    saveKoala(koalaToSend);
 
     // Event listener that uses event delegation 
     $('#viewKoalas').on('click', '.delete-button', deleteKoala);
 
-  }); 
+  });
 }
 
 // initial GET request for ALL koalas
-function getKoalas(){
-  console.log( 'in getKoalas' );
+function getKoalas() {
+  console.log('in getKoalas');
   // ajax call to server to get koalas
   $.ajax({
     type: 'GET',
@@ -51,10 +52,10 @@ function getKoalas(){
 
 
 
-function saveKoala( newKoala ){
-  console.log( 'in saveKoala', newKoala );
+function saveKoala(newKoala) {
+  console.log('in saveKoala', newKoala);
   // ajax call to server to get koalas
- 
+
 }
 
 // delete a koala with a given id
@@ -67,18 +68,18 @@ function deleteKoala() {
 
   // Send a delete request to the server
   $.ajax({
-      method: 'DELETE',
-      url: `/koalas/${koalaId}`
+    method: 'DELETE',
+    url: `/koalas/${koalaId}`
   })
-      .then((response) => {
-        console.log('deleted a koala');
-        getKoalas();
-      })
-      .catch((error) => {
-        console.log('Error in delete request - deleteKoala()', error);
-        // Notifies the user with an alert window
-        alert('Error with deleting a koala');
-      })
+    .then((response) => {
+      console.log('deleted a koala');
+      getKoalas();
+    })
+    .catch((error) => {
+      console.log('Error in delete request - deleteKoala()', error);
+      // Notifies the user with an alert window
+      alert('Error with deleting a koala');
+    })
 }
 
 
@@ -87,8 +88,21 @@ function render(koalas) {
   $('#viewKoalas').empty();
   // loop through the koalas
   for (let i = 0; i < koalas.length; i++) {
-    // if (${koalas[i].ready_to_transfer})
-    $('#viewKoalas').append(`
+    if (`${koalas[i].ready_to_transfer} == N`) {
+      $('#viewKoalas').append(`
+    <tr data-id=${koalas[i].id}>
+    <td>${koalas[i].name}</td>
+    <td>${koalas[i].age}</td>
+    <td>${koalas[i].gender}</td>
+    <td>${koalas[i].ready_to_transfer}</td>
+    <td>${koalas[i].notes}</td>
+    <td><button id="transfer-btn">Ready to Transfer</button></td>
+    <td>${koalas[i].remove}</td>
+    <td><button class='delete-button'>Delete</button></td>
+</tr>
+    `)
+    } else {
+      $('#viewKoalas').append(`
     <tr data-id=${koalas[i].id}>
     <td>${koalas[i].name}</td>
     <td>${koalas[i].age}</td>
@@ -100,21 +114,24 @@ function render(koalas) {
     <td><button class='delete-button'>Delete</button></td>
 </tr>
     `)
+    }
+    }
   }
-// TODO ADD PUT req to update transfer status
-function transferReady() {
-  console.log('in transferReady');
-  const koalaId = $(this).parent().parent().data('id');
+    // TODO ADD PUT req to update transfer status
+    function transferReady() {
+      console.log('in transferReady');
+      const koalaId = $(this).parent().parent().data('id');
 
-  $.ajax({
-    method: 'PUT',
-    url: `/koalas/${koalaId}`
-  }).then((response) => {
-    console.log( 'Koala ready for transfer!' );
-    getKoalas();
-  }).catch((error) => {
-    console.log( 'Error changing transfer status', error )
-    alert( 'Transfer status NOT updated!' );
-    res.sendStatus(500);
-  });
-}}
+      $.ajax({
+        method: 'PUT',
+        url: `/koalas/${koalaId}`
+      }).then((response) => {
+        console.log('Koala ready for transfer!');
+        getKoalas();
+      }).catch((error) => {
+        console.log('Error changing transfer status', error)
+        alert('Transfer status NOT updated!');
+        res.sendStatus(500);
+      });
+    }
+  
