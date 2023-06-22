@@ -1,14 +1,14 @@
-CREATE TABLE "koalas" (
+CREATE TABLE "Koalas" (
     "id" SERIAL PRIMARY KEY,
     "name" VARCHAR(80) NOT NULL,
     "gender" VARCHAR(80) NOT NULL,
     "age" INTEGER,
-    "ready_to_transer" VARCHAR(80) NOT NULL,
+    "ready_to_transfer" VARCHAR(80) NOT NULL,
     "notes" VARCHAR(80) NOT NULL
 );
 
-INSERT INTO "koalas" 
-	("name", "gender", "age","ready_to_transer","notes") 
+INSERT INTO "Koalas" 
+	("name", "gender", "age","ready_to_transfer","notes") 
 VALUES 
 	('Scotty','M',4,'Y','Born in Guatemala'),
 	('Jean', 'F',5,'Y','Allergic to lots of lava'),
