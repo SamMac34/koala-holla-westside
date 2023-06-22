@@ -42,7 +42,7 @@ function getKoalas(){
     // create console log to make sure it works
     console.log('GET /koalas response:', response);
     // render koalas
-    // render(response);
+    render(response);
   })
 } // end getKoalas
 
@@ -84,7 +84,7 @@ function render(koalas) {
   $('#viewKoalas').empty();
   // loop through the koalas
   for (let i = 0; i < koalas.length; i++) {
-    if (${koalas[i].ready_to_transfer})
+    // if (${koalas[i].ready_to_transfer})
     $('#viewKoalas').append(`
     <tr data-id=${koalas[i].id}>
     <td>${koalas[i].name}</td>

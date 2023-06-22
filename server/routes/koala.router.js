@@ -1,11 +1,12 @@
 const express = require('express');
-const koalaRouter = express.Router();
+const pool = require('../modules/pool');
+const router = express.Router();
 
 // DB CONNECTION
 
 
 // GET
-Router.get('/:id', (req, res) => {
+router.get('/:id', (req, res) => {
     // id is a route parameter
     // we use this parameter to identify
     // that we want this specific identified part of the request
@@ -19,7 +20,7 @@ Router.get('/:id', (req, res) => {
 
     // use pool.query to access pool 
     // (group of connections between server and database)
-    Pool.query(query, [idToGet])
+    pool.query(query, [idToGet])
 
     // .then because query is asynchronous
         .then((result) => {
@@ -63,4 +64,4 @@ router.delete('/:id', (req, res) => {
         });
 })
 
-module.exports = koalaRouter;
+module.exports = router;
