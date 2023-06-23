@@ -10,6 +10,9 @@ $(document).ready(function () {
     // Listener to update koala transfer status
     $( '#viewKoalas' ).on( 'click', '.transfer-btn', handleTransferReady )
 
+    // Event listener that uses event delegation 
+    $('#viewKoalas').on('click', '.delete-button', deleteKoala);
+
 }); // end doc ready
 
 function setupClickListeners() {
@@ -29,8 +32,7 @@ function setupClickListeners() {
     // call saveKoala with the new object
     saveKoala(koalaToSend);
 
-    // Event listener that uses event delegation 
-    $('#viewKoalas').on('click', '.delete-button', deleteKoala);
+
 
   });
 }
@@ -56,7 +58,7 @@ function saveKoala(newKoala) {
   console.log('in saveKoala', newKoala);
   // ajax call to server to get koalas
   
-  // Post the DATA recieved from the user
+  // Post the DATA received from the user
   $.ajax({
     method:'POST',
     url:'/koalas',
@@ -83,7 +85,7 @@ function deleteKoala() {
   console.log('in deleteKoala: ', $(this));
 
   // Use DOM traversal to get the data id of the koalas table row
-  const koalaId = $(this).parent().parent().data('id');
+  const koalaId = $(this).parent().parent().data("id");
 
   // Send a delete request to the server
   $.ajax({
