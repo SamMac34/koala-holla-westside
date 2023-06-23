@@ -8,7 +8,7 @@ $( document ).ready( function(){
   getKoalas();
   
     // Listener to update koala transfer status
-    $( '#viewKoalas' ).on( 'click', '.transfer-btn', transferReady )
+    $( '#viewKoalas' ).on( 'click', '.transfer-btn', handleTransferReady )
 
 }); // end doc ready
 
@@ -87,7 +87,7 @@ function render(koalas) {
   $('#viewKoalas').empty();
   // loop through the koalas
   for (let i = 0; i < koalas.length; i++) {
-    // if (${koalas[i].ready_to_transfer})
+    if(`${koalas[i].ready_to_transfer}` == 'N'){
     $('#viewKoalas').append(`
     <tr data-id=${koalas[i].id}>
     <td>${koalas[i].name}</td>
@@ -95,28 +95,42 @@ function render(koalas) {
     <td>${koalas[i].gender}</td>
     <td>${koalas[i].ready_to_transfer}</td>
     <td>${koalas[i].notes}</td>
-    <td>${koalas[i].mark_ready}</td>
-    <td>${koalas[i].remove}</td>
+    <td><button class="transfer-btn"> Mark Ready</button></td>
     <td><button class='delete-button'>Delete</button></td>
 </tr>
     `)
-  }
+  } else {$('#viewKoalas').append(`
+  <tr data-id=${koalas[i].id}>
+  <td>${koalas[i].name}</td>
+  <td>${koalas[i].age}</td>
+  <td>${koalas[i].gender}</td>
+  <td>${koalas[i].ready_to_transfer}</td>
+  <td>${koalas[i].notes}</td>
+  <td>Ready to Transfer! :)</td>
+  <td><button class='delete-button'>Delete</button></td>
+</tr>
+  `
+  )}
+}
 };
 
 // TODO ADD PUT req to update transfer status
-function transferReady() {
+function handleTransferReady() {
   console.log('in transferReady');
+  console.log('This is: ', $(this));
   const koalaId = $(this).parent().parent().data('id');
+  console.log('koalaId is: ', koalaId);
+  
 
   $.ajax({
     method: 'PUT',
     url: `/koalas/${koalaId}`
   }).then((response) => {
-    console.log( 'Koala ready for transfer!' );
+    console.log( 'Koala ready for transfer! Response: ', response );
     getKoalas();
   }).catch((error) => {
     console.log( 'Error changing transfer status', error )
     alert( 'Transfer status NOT updated!' );
-    resizeBy.sendstatus(500);
+    res.sendStatus(500);
   });
 }

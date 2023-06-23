@@ -66,7 +66,7 @@ router.get('/:id', (req, res) => {
 // PUT request to update tranfer value YES/NO 
 router.put('/:id', (req, res) => {
     let idToUpdate = req.params.id;
-    let query = `UPDATE "koalas" SET "ready_to_transfer" = yes; WHERE "id" = $1;`;
+    let query = `UPDATE "Koalas" SET "ready_to_transfer" = 'Y' WHERE "id" = $1;`;
     pool.query(query, [idToUpdate])
     .then((results) => {
         console.log('Koala is Ready to transfer!', results);
