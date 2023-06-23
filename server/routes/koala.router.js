@@ -61,7 +61,7 @@ router.get('/:id', (req, res) => {
 
 // POST
 // Post the Koalas
-koalaRouter.post("/", (req, res) => {
+router.post("/", (req, res) => {
   let newKoala = req.body;
   // Insert and use pararmeteraiztion for POST
   let queryText = `INSERT INTO "Koalas" ("name", "gender", "age", "ready_to_transfer","notes")
