@@ -1,13 +1,13 @@
 const express = require('express');
-const koalaRouter = express.Router();
-const pool = require('../modules/pool.js')
+const pool = require('../modules/pool');
+const router = express.Router();
 
 
 // DB CONNECTION
 
 // GET
-// GET all songs from database
-koalaRouter.get('/', (req, res) => {
+// GET all koalas from database
+router.get('/', (req, res) => {
     // write SQL query and save that in a variable
     let queryText = 'SELECT * FROM "Koalas";';
 
@@ -27,7 +27,7 @@ koalaRouter.get('/', (req, res) => {
 
 
 // GET for specific id
-koalaRouter.get('/:id', (req, res) => {
+router.get('/:id', (req, res) => {
     // id is a route parameter
     // we use this parameter to identify
     // that we want this specific identified part of the request
@@ -83,9 +83,9 @@ koalaRouter.post("/", (req, res) => {
 });
 
 // PUT request to update tranfer value YES/NO 
-koalaRouter.put('/:id', (req, res) => {
+router.put('/:id', (req, res) => {
     let idToUpdate = req.params.id;
-    let query = `UPDATE "koalas" SET "ready_to_transfer" = yes; WHERE "id" = $1;`;
+    let query = `UPDATE "Koalas" SET "ready_to_transfer" = 'Y' WHERE "id" = $1;`;
     pool.query(query, [idToUpdate])
     .then((results) => {
         console.log('Koala is Ready to transfer!', results);
@@ -96,5 +96,22 @@ koalaRouter.put('/:id', (req, res) => {
     });
 });
 // DELETE
+router.delete('/:id', (req, res) => {
+    let idToDelete = req.params.id;
+    // Use query parameterization to protect the 
+    // database from SQL injection
+    let query = `DELETE FROM "koalas" WHERE id = $1`;
+    // Connect/talk with the database and run the query
+    pool.query(query, [idToDelete])
+        .then((results) => {
+            console.log('koala deleted');
+            // Send status 200 or 'ok' to the client
+            res.sendStatus(200);
+        }).catch((error) => {
+            console.log('Error making database query - in router.delete: ', error);
+            // Send status code 500 or 'internal server error'
+            res.sendStatus(500);
+        });
+})
 
-module.exports = koalaRouter;
+module.exports = router;
