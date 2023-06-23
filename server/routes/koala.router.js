@@ -41,7 +41,7 @@ koalaRouter.get('/:id', (req, res) => {
 
     // use pool.query to access pool 
     // (group of connections between server and database)
-    Pool.query(query, [idToGet])
+    pool.query(query, [idToGet])
 
     // .then because query is asynchronous
         .then((result) => {
@@ -83,7 +83,7 @@ koalaRouter.post("/", (req, res) => {
 });
 
 // PUT request to update tranfer value YES/NO 
-router.put('/:id', (req, res) => {
+koalaRouter.put('/:id', (req, res) => {
     let idToUpdate = req.params.id;
     let query = `UPDATE "koalas" SET "ready_to_transfer" = yes; WHERE "id" = $1;`;
     pool.query(query, [idToUpdate])
