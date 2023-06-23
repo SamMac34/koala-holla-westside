@@ -2,40 +2,19 @@ console.log('js');
 
 $(document).ready(function () {
   console.log('JQ');
-  // Establish Click Listeners
-  setupClickListeners()
+  // Event listener that uses event delegation to add a Koala
+  $('#addButton').on('click', addKoala);
+
   // load existing koalas on page load
   getKoalas();
-  
+
     // Listener to update koala transfer status
     $( '#viewKoalas' ).on( 'click', '.transfer-btn', handleTransferReady )
 
     // Event listener that uses event delegation 
-    $('#viewKoalas').on('click', '.delete-button', deleteKoala);
+    $('#viewKoalas').on('click', '.delete-button', deleteKoala)
 
 }); // end doc ready
-
-function setupClickListeners() {
-  $( '#addButton' ).on( 'click', function(){
-    console.log( 'in addButton on click' );
-    
-    // get user input and put in an object
-    // NOT WORKING YET :(
-    // using a test object
-    let koalaToSend = {
-      name: $('#nameIn').val(),
-      age: $('#ageIn').val(),
-      gender: $('#genderIn').val(),
-      readyForTransfer: $('#readyForTransferIn').val(),
-      notes: $('#notesIn').val(),
-    };
-    // call saveKoala with the new object
-    saveKoala(koalaToSend);
-
-
-
-  });
-}
 
 // initial GET request for ALL koalas
 function getKoalas() {
@@ -53,31 +32,32 @@ function getKoalas() {
 } // end getKoalas
 
 
-
-function saveKoala(newKoala) {
-  console.log('in saveKoala', newKoala);
-  // ajax call to server to get koalas
+// function saveKoala(newKoala) {
+//   console.log('in saveKoala', newKoala);
+//   // ajax call to server to get koalas
   
-  // Post the DATA received from the user
-  $.ajax({
-    method:'POST',
-    url:'/koalas',
-    data: newKoala
-  }).then((response) => {
-    // EMPTY THE VALUES
-    $('#nameIn').val(''),
-    $('#ageIn').val(''),
-    $('#genderIn').val(''),
-    $('#readyForTransferIn').val(''),
-    $('#notesIn').val(''),
-    // GET the Koalas
-    getKoalas();
-    console.log('My response', response);
-    // CATCH ANY ERRORS
-  }).catch((error) => {
-    console.log('Catch any Errors', error);
-  })
-}
+//   // Post the DATA received from the user
+//   $.ajax({
+//     method:'POST',
+//     url:'/koalas',
+//     data: newKoala
+//   }).then((response) => {
+//     // EMPTY THE VALUES
+//     $('#nameIn').val(''),
+//     $('#ageIn').val(''),
+//     $('#genderIn').val(''),
+//     $('#readyForTransferIn').val(''),
+//     $('#notesIn').val(''),
+//     // GET the Koalas
+//     getKoalas();
+//     console.log('My response', response);
+//     // CATCH ANY ERRORS
+//   }).catch((error) => {
+//     console.log('Catch any Errors', error);
+//   })
+// }
+
+
 
 // delete a koala with a given id
 function deleteKoala() {
@@ -102,6 +82,81 @@ function deleteKoala() {
       alert('Error with deleting a koala');
     })
 }
+
+
+
+
+
+function addKoala() {
+    console.log('in addKoala on click');
+  
+    // get user input and put in an object
+    // using a test object
+    let newKoala = {
+      name: $('#nameIn').val(),
+      age: $('#ageIn').val(),
+      gender: $('#genderIn').val(),
+      ready_to_transfer: $('#readyForTransferIn').val(),
+      notes: $('#notesIn').val(),
+    };
+  
+    $.ajax({
+      type: 'POST',
+      url: '/koalas',
+      data: newKoala,
+    })
+      .then(function (response) {
+        console.log('Response from server.', response);
+        $('#nameIn').val(''),
+        $('#ageIn').val(''),
+        $('#genderIn').val(''),
+        $('#readyForTransferIn').val(''),
+        $('#notesIn').val('');
+        getKoalas();
+      })
+      .catch(function (error) {
+        console.log('Error in POST', error);
+        alert('Unable to add koala at this time. Please try again later.');
+      });
+  }
+  
+
+
+
+// function addKoala() {
+//   console.log( 'in addKoala on click' );
+  
+//   // get user input and put in an object
+//   // NOT WORKING YET :(
+//   // using a test object
+//   let newKoala = {
+//     name: $('#nameIn').val(),
+//     age: $('#ageIn').val(),
+//     gender: $('#genderIn').val(),
+//     ready_to_transfer: $('#readyForTransferIn').val(),
+//     notes: $('#notesIn').val(),
+//   };
+
+//   $.ajax({
+//     type: 'POST',
+//     url: "/koalas",
+//     data: newKoala,
+//   })
+//     .then(function (response) {
+//       console.log("Response from server.", response);
+//       $("#nameIn").val(""), $("#ageIn").val(""), $('#genderIn').val(""), 
+//       $('#readyForTransferIn').val(""), $('#notesIn').val("");
+//       // saveKoala();
+//     })
+//     .catch(function (error) {
+//       console.log("Error in POST", error);
+//       alert("Unable to add koala at this time. Please try again later.");
+//     });
+//   // call saveKoala with the new object
+//   // saveKoala();
+
+// }
+
 
 
 // function render
@@ -135,6 +190,8 @@ function render(koalas) {
   )}
 }
 };
+
+
 
 // TODO ADD PUT req to update transfer status
 function handleTransferReady() {
