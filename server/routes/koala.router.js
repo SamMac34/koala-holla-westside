@@ -100,7 +100,7 @@ router.delete('/:id', (req, res) => {
     let idToDelete = req.params.id;
     // Use query parameterization to protect the 
     // database from SQL injection
-    let query = `DELETE FROM "koalas" WHERE id = $1`;
+    let query = `DELETE FROM "Koalas" WHERE "id" = $1`;
     // Connect/talk with the database and run the query
     pool.query(query, [idToDelete])
         .then((results) => {
