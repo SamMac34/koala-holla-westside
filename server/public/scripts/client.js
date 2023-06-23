@@ -1,7 +1,7 @@
-console.log( 'js' );
+console.log('js');
 
-$( document ).ready( function(){
-  console.log( 'JQ' );
+$(document).ready(function () {
+  console.log('JQ');
   // Establish Click Listeners
   setupClickListeners()
   // load existing koalas on page load
@@ -26,17 +26,17 @@ function setupClickListeners() {
       notes: 'testName',
     };
     // call saveKoala with the new object
-    saveKoala( koalaToSend );
+    saveKoala(koalaToSend);
 
     // Event listener that uses event delegation 
     $('#viewKoalas').on('click', '.delete-button', deleteKoala);
 
-  }); 
+  });
 }
 
 // initial GET request for ALL koalas
-function getKoalas(){
-  console.log( 'in getKoalas' );
+function getKoalas() {
+  console.log('in getKoalas');
   // ajax call to server to get koalas
   $.ajax({
     type: 'GET',
@@ -51,10 +51,10 @@ function getKoalas(){
 
 
 
-function saveKoala( newKoala ){
-  console.log( 'in saveKoala', newKoala );
+function saveKoala(newKoala) {
+  console.log('in saveKoala', newKoala);
   // ajax call to server to get koalas
- 
+
 }
 
 // delete a koala with a given id
@@ -67,18 +67,18 @@ function deleteKoala() {
 
   // Send a delete request to the server
   $.ajax({
-      method: 'DELETE',
-      url: `/koalas/${koalaId}`
+    method: 'DELETE',
+    url: `/koalas/${koalaId}`
   })
-      .then((response) => {
-        console.log('deleted a koala');
-        getKoalas();
-      })
-      .catch((error) => {
-        console.log('Error in delete request - deleteKoala()', error);
-        // Notifies the user with an alert window
-        alert('Error with deleting a koala');
-      })
+    .then((response) => {
+      console.log('deleted a koala');
+      getKoalas();
+    })
+    .catch((error) => {
+      console.log('Error in delete request - deleteKoala()', error);
+      // Notifies the user with an alert window
+      alert('Error with deleting a koala');
+    })
 }
 
 
